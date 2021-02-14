@@ -5,3 +5,4 @@ tests/
 tslint.json
 graveyard
 .idea
+dist

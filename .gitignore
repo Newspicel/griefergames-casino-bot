@@ -1,0 +1,7 @@
+node_modules/
+launcher_profiles.json
+tests/
+.vscode/
+tslint.json
+graveyard
+.idea

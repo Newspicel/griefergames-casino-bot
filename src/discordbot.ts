@@ -1,16 +1,15 @@
-import {Client, Message, MessageEmbed} from "discord.js";
-import {Bot} from "griefergames/dist/bot";
+import {Client, ColorResolvable, DMChannel, Message, MessageEmbed, NewsChannel, TextChannel} from "discord.js";
+import {BootStrap} from "./index";
 
-let client: Client;
 const prefix = "-";
 
-export let selling = true;
-
-
 export class DiscordBot {
-    public listen(bot: Bot): Promise<string> {
-        client = new Client();
-        client.on("message", (message: Message) => {
+
+    client: Client;
+
+    public start(bootStrap: BootStrap): void {
+        this.client = new Client();
+        this.client.on("message", (message: Message) => {
             if (!message.content.startsWith(prefix) || message.author.bot) {
                 return;
             }
@@ -19,38 +18,35 @@ export class DiscordBot {
             switch (command) {
                 case "c":
                 case "command": {
-                    bot.sendCommand(args.slice(0).join(' '), true).then(value => {
-                        message.channel.send(new MessageEmbed()
-                            .setColor('#002aff')
-                            .setDescription(value)
-                            .setTimestamp())
-                    });
+                    bootStrap.minecraftBot.bot.sendCommand(args.slice(0).join(' '), true).then(value => this.sendEmbed(message.channel, '#002aff', value));
                     break
                 }
                 case "selling": {
-                    if (selling){
-                        selling = false;
-                        message.channel.send("Die Verkaufe wurden nun deaktiviert")
-                    }else {
-                        selling = true;
-                        message.channel.send("Die Verkaufe wurden nun aktiviert")
+                    if (bootStrap.minecraftBot.selling) {
+                        bootStrap.minecraftBot.selling = false;
+                        message.channel.send("Die Verkaufe wurden nun deaktiviert").then()
+                    } else {
+                        bootStrap.minecraftBot.selling = true;
+                        message.channel.send("Die Verkaufe wurden nun aktiviert").then()
                     }
                     break;
                 }
             }
         })
-        return client.login('ODEwNTIzMTg1ODc1MTI0MjI0.YCk4ig.7WebGLSQNcZMKRGf6fkzvXlgcEY')
+        this.client.login('ODEwNTIzMTg1ODc1MTI0MjI0.YCk4ig.7WebGLSQNcZMKRGf6fkzvXlgcEY').then()
     }
 
-    public getSelling() {
-        return selling;
+    public sendEmbed(channel: TextChannel | DMChannel | NewsChannel, color: ColorResolvable, description: String): Promise<Message> {
+        return channel.send(new MessageEmbed().setColor(color).setDescription(description).setTimestamp());
     }
 
-    public getClient() {
-        return client;
+    public sendEmbedWithTitle(channel: TextChannel | DMChannel | NewsChannel, color: ColorResolvable, title: String, description: String): Promise<Message> {
+        return channel.send(new MessageEmbed().setColor(color).setDescription(description).setTitle(title).setTimestamp());
     }
 
-    public getEmbed() {
-        return MessageEmbed;
+    public sendBuyLog(player: String, many: number) {
+        const channel: TextChannel | DMChannel | NewsChannel = (<TextChannel | DMChannel | NewsChannel>this.client.channels.cache.get('810530298823180358'));
+        this.sendEmbed(channel, '#46ff00', "Der Spieler " + player + " hat sich " + many + " Tokens gekauft!").then()
     }
+
 }

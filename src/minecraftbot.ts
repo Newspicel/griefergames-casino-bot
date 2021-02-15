@@ -1,9 +1,10 @@
 import {Bot} from "griefergames/dist/bot";
 import {createBot} from 'griefergames';
 import {BootStrap} from "./index";
+import {DMChannel, NewsChannel, TextChannel} from "discord.js";
 
 const owners = ["Newspicel", "ZetorZockt", "Robkiller02"]
-const coinPrice = 450;
+const coinPrice = 1;
 
 export class MinecraftBot {
 
@@ -40,11 +41,20 @@ export class MinecraftBot {
             }
             if ((amount % coinPrice) === 0) {
                 const number = amount / coinPrice;
-                this.bot.client.toss(371, null, number).then(() => this.bot.sendCommand("msg " + player + " Danke für deinen Einkauf :D Viel Spaß beim Zocken <3").then())
-                bootstrap.discordBot.sendBuyLog(player, number)
+                this.bot.client.toss(371, null, number).then(() => {
+                    this.bot.sendCommand("msg " + player + " Danke für deinen Einkauf :D Viel Spaß beim Zocken <3");
+                    bootstrap.discordBot.sendBuyLog(player, number);
+                }).catch((error) => {
+                    this.bot.sendCommand("msg " + player + " Ich habe leider keine Münzen mehr :D Versuche es später erneut <3");
+                    const channel: TextChannel | DMChannel | NewsChannel = (<TextChannel | DMChannel | NewsChannel>bootstrap.discordBot.client.channels.cache.get('810530211295789057'));
+                    bootstrap.discordBot.sendEmbed(channel, "#ff0000", 'Ich habe keine Items mehr!');
+                })
             } else {
                 this.bot.pay(player, amount).then(() => {
-                    this.bot.sendCommand("msg " + player + " Du hast mir keinen Passenden Betrag gegeben ich nehme nur 450$ für 1 Token 4.000$ für 10 Tokens. Du hast dein Geld zurück erhalten!").then()
+                    this.bot.sendCommand("msg " + player + " Du hast mir keinen Passenden Betrag gegeben ich nehme nur 450$ für 1 Token 4.000$ für 10 Tokens. Du hast dein Geld zurück erhalten!").then(value => {
+                        const channel: TextChannel | DMChannel | NewsChannel = (<TextChannel | DMChannel | NewsChannel>bootstrap.discordBot.client.channels.cache.get('810530211295789057'));
+                        bootstrap.discordBot.sendEmbed(channel, "#ff0000", 'Der Spieler '+player+' mit dem Rang '+rank+' wollte sich etwas für '+ amount+'$ kaufen! Jedoch habe ich kein passendes Produkt gefunden!');
+                    })
                 });
             }
         });

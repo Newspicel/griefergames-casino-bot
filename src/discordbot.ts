@@ -40,12 +40,16 @@ export class DiscordBot {
         return channel.send(new MessageEmbed().setColor(color).setDescription(description).setTimestamp());
     }
 
+    public sendMessage(channel: TextChannel | DMChannel | NewsChannel, message: string): Promise<Message> {
+        return channel.send(message);
+    }
+
     public sendEmbedWithTitle(channel: TextChannel | DMChannel | NewsChannel, color: ColorResolvable, title: String, description: String): Promise<Message> {
         return channel.send(new MessageEmbed().setColor(color).setDescription(description).setTitle(title).setTimestamp());
     }
 
     public sendBuyLog(player: String, many: number) {
-        const channel: TextChannel | DMChannel | NewsChannel = (<TextChannel | DMChannel | NewsChannel>this.client.channels.cache.get('810530298823180358'));
+        const channel: TextChannel | DMChannel | NewsChannel = (<TextChannel | DMChannel | NewsChannel>this.client.channels.cache.get('810530211295789057'));
         this.sendEmbed(channel, '#46ff00', "Der Spieler " + player + " hat sich " + many + " Tokens gekauft!").then()
     }
 

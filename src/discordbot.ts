@@ -13,6 +13,10 @@ export class DiscordBot {
             if (!message.content.startsWith(prefix) || message.author.bot) {
                 return;
             }
+            if (message.channel.id != "803352924725837845"){
+                message.channel.send("Bitte benutze den Bot nur in <#803352924725837845>!").then()
+                return;
+            }
             const args = message.content.slice(prefix.length).trim().split(' ');
             const command = args.shift().toLowerCase();
             switch (command) {
@@ -33,7 +37,7 @@ export class DiscordBot {
                 }
             }
         })
-        this.client.login('ODEwNTIzMTg1ODc1MTI0MjI0.YCk4ig.7WebGLSQNcZMKRGf6fkzvXlgcEY').then()
+        this.client.login('ODE1MDEyMjMyMzk1NDg5Mjkx.YDmNSg.WYQGD3GFmwcqLqrADDEfM-eE0zA').then()
     }
 
     public sendEmbed(channel: TextChannel | DMChannel | NewsChannel, color: ColorResolvable, description: String): Promise<Message> {
@@ -50,7 +54,7 @@ export class DiscordBot {
 
     public sendBuyLog(player: String, many: number) {
         const channel: TextChannel | DMChannel | NewsChannel = (<TextChannel | DMChannel | NewsChannel>this.client.channels.cache.get('810530211295789057'));
-        this.sendEmbed(channel, '#46ff00', "Der Spieler " + player + " hat sich " + many + " Tokens gekauft!").then()
+        this.sendEmbed(channel, '#46ff00', "Der Spieler " + player + " hat sich " + (many == 1 ? "einen Token" : (many + " Tokens")) + " gekauft!").then()
     }
 
 }

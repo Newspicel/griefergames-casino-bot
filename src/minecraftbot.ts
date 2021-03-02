@@ -17,7 +17,8 @@ export class MinecraftBot {
             username: 'baylakemedion93@gmail.com',
             password: 'Toshka190',
             logMessages: false,
-            solveAfkChallenge: true
+            solveAfkChallenge: true,
+
         });
 
         this.bot.init();
@@ -31,7 +32,9 @@ export class MinecraftBot {
                         owners.forEach(value => this.bot.sendMsg(value, "Ich bin jetzt online!").then())
                         this.bot.sendCommand("home kasino").then();
                         const channel: TextChannel | DMChannel | NewsChannel = (<TextChannel | DMChannel | NewsChannel>bootstrap.discordBot.client.channels.cache.get('811244169972154410'));
-                        bootstrap.discordBot.sendEmbed(channel, "GREEN", "Ich bin wieder online. Mit /p h tokenbot könnt ihr wieder bei mir einkaufen.")
+                        bootstrap.discordBot.sendEmbed(channel, "GREEN", "Ich bin wieder online. Mit /p h Kasino könnt ihr wieder bei mir einkaufen.")
+                        this.bot.sendChat("&3Huhu, ich, der Kasino Bot von /p h Kasino auf CB11, ist wieder da!").then()
+                        this.bot.sendChat(".").then()
                     })
                 })
         });
@@ -47,7 +50,6 @@ export class MinecraftBot {
                 this.bot.client.toss(371, null, 64).then(() => {
                     this.bot.sendCommand("msg " + player + " Danke für deinen Einkauf :D Viel Spaß beim Zocken <3");
                     bootstrap.discordBot.sendBuyLog(player, 64);
-                    owners.forEach(value => this.bot.sendMsg(value, player + " Hat sich 64 Tokens gekauft!").then())
                 }).catch(() => {
                     this.bot.sendCommand("msg " + player + " Ich habe leider keine Münzen mehr :D Versuche es später erneut <3");
                     const channel: TextChannel | DMChannel | NewsChannel = (<TextChannel | DMChannel | NewsChannel>bootstrap.discordBot.client.channels.cache.get('814868818806439977'));
@@ -86,5 +88,17 @@ export class MinecraftBot {
             const channel: TextChannel | DMChannel | NewsChannel = (<TextChannel | DMChannel | NewsChannel>bootstrap.discordBot.client.channels.cache.get('814533495350231100'));
             bootstrap.discordBot.sendMessage(channel, text).catch(() => {})
         });
+
+        this.bot.on('itemClearAlert', (seconds: number) => {
+            this.sendPlotChatMessage("&4In &c"  + (seconds == 1 ? "einer Sekunde" : ( seconds + " Sekunden")) + " &4ist Itemclear. Bitte mit dem Spielen aufhören.")
+        })
+    }
+
+    public sendPlotChatMessage(s: string) : void {
+        this.bot.sendCommand("plot chat").then( () =>
+            this.bot.sendChat(s, true).then( () =>
+                this.bot.sendCommand("plot chat", true).then()
+            )
+        )
     }
 }

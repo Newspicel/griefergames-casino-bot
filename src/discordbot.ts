@@ -25,6 +25,11 @@ export class DiscordBot {
                     bootStrap.minecraftBot.bot.sendCommand(args.slice(0).join(' '), true).then(value => this.sendEmbed(message.channel, '#002aff', value));
                     break
                 }
+                case "m":
+                case "message":{
+                    bootStrap.minecraftBot.bot.sendChat(args.slice(0).join(' '), true).then(value => this.sendEmbed(message.channel, '#002aff', value));
+                    break
+                }
                 case "selling": {
                     if (bootStrap.minecraftBot.selling) {
                         bootStrap.minecraftBot.selling = false;

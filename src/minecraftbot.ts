@@ -14,8 +14,8 @@ export class MinecraftBot {
 
     public start(bootstrap: BootStrap): void {
         this.bot = createBot({
-            username: 'baylakemedion93@gmail.com',
-            password: 'Toshka190',
+            username: '',
+            password: '',
             logMessages: false,
             solveAfkChallenge: true,
 

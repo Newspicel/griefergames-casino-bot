@@ -42,7 +42,7 @@ export class DiscordBot {
                 }
             }
         })
-        this.client.login('ODE1MDEyMjMyMzk1NDg5Mjkx.YDmNSg.WYQGD3GFmwcqLqrADDEfM-eE0zA').then()
+        this.client.login('').then()
     }
 
     public sendEmbed(channel: TextChannel | DMChannel | NewsChannel, color: ColorResolvable, description: String): Promise<Message> {

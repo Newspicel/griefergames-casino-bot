@@ -1,3 +1,3 @@
 # griefergames-casino-bot
 
-A Bot to create a Casino on Griefergames.net
+Software to create a Casino Bot for Griefergames.net
